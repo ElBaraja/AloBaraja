@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
 
-  // Mapeo nombres cortos de los inputs en HTML a nombres exactos de preguntas en Google Forms
+  // Mapeo nombres cortos a preguntas Google Forms
   const nameToQuestionText = {
     clipDelAno: "CLIP DEL AÑO",
     repo: "R . E . P . O",
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mejorTiktok: "MEJOR TIK-TOK"
   };
 
-  // Entry IDs en Google Forms para cada pregunta (nombre exacto)
+  // Entry IDs Google Forms para cada pregunta
   const entryIDs = {
     "CLIP DEL AÑO": '1485533663',
     "R . E . P . O": '2064071877',
@@ -97,6 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
+  // Validación ANTES de enviar para evitar ir a Google Forms con datos incompletos
+  function validarAntesDeEnviar() {
+    const categorias = Object.keys(nameToQuestionText);
+    for (const cat of categorias) {
+      if (!document.querySelector(`input[name="${cat}"]:checked`)) {
+        alert(`Por favor seleccioná una opción para la categoría "${nameToQuestionText[cat]}".`);
+        return false;
+      }
+    }
+    return true;
+  }
+
   // Manejar selección y añadir clase selected
   document.querySelectorAll('.video-container').forEach(container => {
     const radios = container.querySelectorAll('input[type="radio"]');
@@ -137,32 +149,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Enviar formulario a Google Forms con form oculto + submit tradicional
-  function enviarGoogleForm(votos) {
+  // Enviar formulario a Google Forms con form oculto + fetch para no redirigir
+  async function enviarGoogleForm(votos) {
     const url = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
 
-    const form = document.createElement('form');
-    form.style.display = 'none';
-    form.method = 'POST';
-    form.action = url;
-    form.target = '_blank';
-
+    // Construir datos para enviar
+    const formData = new URLSearchParams();
     for (const key in votos) {
       const questionName = nameToQuestionText[key];
       if (!questionName) continue;
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = `entry.${entryIDs[questionName]}`;
-      input.value = votos[key];
-      form.appendChild(input);
+      formData.append(`entry.${entryIDs[questionName]}`, votos[key]);
     }
 
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+    try {
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      });
+      alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
+
+      // Resetear selección y ocultar botón votar
+      document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+      document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
+      voteButtonContainer.style.display = 'none';
+
+    } catch (error) {
+      alert('❌ Hubo un error al enviar tu voto. Por favor, intentá de nuevo.');
+      console.error('Error al enviar votos a Google Forms:', error);
+    }
   }
 
   voteButton.addEventListener('click', () => {
+    if (!validarAntesDeEnviar()) return;
+
     const votos = {};
     const categorias = Object.keys(nameToQuestionText);
 
@@ -172,11 +195,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     enviarGoogleForm(votos);
-
-    alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
-
-    document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
-    document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
-    voteButtonContainer.style.display = 'none';
   });
 });
