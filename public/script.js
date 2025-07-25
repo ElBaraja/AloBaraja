@@ -43,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     retina_detect: true
   });
 
-  // Intentar reproducir audio al cargar (para evitar bloqueo)
+  // Intentar reproducir audio al cargar (puede bloquearse)
   forgeSound.volume = 1;
   forgeSound.play().catch(() => {
-    // Puede que no se reproduzca hasta click usuario
+    // No hace nada hasta click usuario
   });
 
   // Función para hacer fade out del audio
@@ -68,10 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mostrar contenido y ocultar bienvenida al click en botón
   enterButton.addEventListener('click', () => {
-    // Play sonido (por si no arrancó)
     forgeSound.play().catch(() => {});
 
-    // Fade out audio y ocultar bienvenida después de 1s
     fadeOutAudio(forgeSound, 1000);
 
     setTimeout(() => {
@@ -80,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
-  // Función para validar que todas las categorías tienen selección
+  // Validar que todas las categorías tengan selección para mostrar botón votar
   function checkSelections() {
     const categories = document.querySelectorAll('.category');
     for (const cat of categories) {
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // Manejar selección de videos y destacar label
+  // Manejar selección y añadir clase selected a labels
   document.querySelectorAll('.video-container').forEach(container => {
     const radios = container.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => {
@@ -105,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Permitir seleccionar radio al clickear el video o el label
+  // Permitir seleccionar radio con click en video o label
   document.querySelectorAll('.video-label').forEach(label => {
     const video = label.querySelector('video');
     const input = label.querySelector('input[type="radio"]');
@@ -129,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Enviar votos con fetch a Google Apps Script
+  // Enviar votos a Google Apps Script con POST JSON
   voteButton.addEventListener('click', () => {
     const votes = {};
     document.querySelectorAll('.category').forEach(cat => {
@@ -145,9 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify(votes),
       headers: { 'Content-Type': 'application/json' }
     })
-      .then(res => res.text())
-      .then(() => {
-        alert("✅ ¡Gracias por votar!\nTus votos:\n" + JSON.stringify(votes, null, 2));
+      .then(res => {
+        if (!res.ok) throw new Error("Respuesta no OK");
+        return res.json();
+      })
+      .then(data => {
+        if (data.result === 'success') {
+          alert("✅ ¡Gracias por votar!\nTus votos:\n" + JSON.stringify(votes, null, 2));
+        } else {
+          alert("⚠️ Hubo un problema guardando el voto:\n" + (data.message || ''));
+        }
       })
       .catch(err => {
         console.error('❌ Error al enviar el voto:', err);
