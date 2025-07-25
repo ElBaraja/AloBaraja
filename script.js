@@ -38,19 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
 
-  // Esta función chequea si hay al menos 1 clip seleccionado en todas las categorías
   function checkSelections() {
     const categories = document.querySelectorAll('.category');
     for (let cat of categories) {
       const selected = cat.querySelector('input[type="radio"]:checked');
-      if (!selected) {
-        return false;
-      }
+      if (!selected) return false;
     }
     return true;
   }
 
-  // Al hacer click en un radio, seteamos estilos y actualizamos botón votar
   document.querySelectorAll('.video-container').forEach(container => {
     const radios = container.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => {
@@ -61,17 +57,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (radio.checked) {
           radio.closest('label.video-label').classList.add('selected');
         }
-        // Mostrar botón votar solo si hay selección en todas las categorías
-        if (checkSelections()) {
-          voteButtonContainer.style.display = 'block';
-        } else {
-          voteButtonContainer.style.display = 'none';
-        }
+        voteButtonContainer.style.display = checkSelections() ? 'block' : 'none';
       });
     });
   });
 
-  // Acción al votar
+  document.querySelectorAll('.video-label').forEach(label => {
+    const video = label.querySelector('video');
+    const input = label.querySelector('input[type="radio"]');
+
+    if (video && input) {
+      video.addEventListener('click', e => {
+        if (!input.checked) {
+          input.checked = true;
+          input.dispatchEvent(new Event('change'));
+        }
+        // El video sigue su funcionamiento natural (play/pause)
+      });
+    }
+
+    label.addEventListener('click', e => {
+      if (e.target !== video) {
+        if (!input.checked) {
+          input.checked = true;
+          input.dispatchEvent(new Event('change'));
+        }
+      }
+    });
+  });
+
   voteButton.addEventListener('click', () => {
     const votes = {};
     document.querySelectorAll('.category').forEach(cat => {
@@ -79,6 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const selected = cat.querySelector('input[type="radio"]:checked');
       if (selected) votes[name] = selected.value;
     });
-    alert("Gracias por votar! Tus votos:\n" + JSON.stringify);
+    alert("Gracias por votar! Tus votos:\n" + JSON.stringify(votes, null, 2));
   });
 });
