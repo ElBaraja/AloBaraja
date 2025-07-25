@@ -260,7 +260,6 @@
 
     // Esta función chequea si hay al menos 1 clip seleccionado en todas las categorías
     function checkSelections() {
-      // Buscamos si en cada categoría hay uno seleccionado
       const categories = document.querySelectorAll('.category');
       for(let cat of categories) {
         const selected = cat.querySelector('input[type="radio"]:checked');
@@ -292,16 +291,35 @@
       });
     });
 
-    // Acción al votar
-    voteButton.addEventListener('click', () => {
+    // Acción al votar: enviamos votos al backend serverless
+    voteButton.addEventListener('click', async () => {
       const votes = {};
       document.querySelectorAll('.category').forEach(cat => {
         const name = cat.querySelector('input[type="radio"]').name;
         const selected = cat.querySelector('input[type="radio"]:checked');
         if(selected) votes[name] = selected.value;
       });
-      alert("Gracias por votar! Tus votos:\n" + JSON.stringify(votes, null, 2));
+
+      try {
+        const res = await fetch('/api/submit-vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(votes),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('Gracias por votar! ' + data.message);
+          // Resetear selección y ocultar botón
+          document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+          document.querySelectorAll('label.video-label').forEach(label => label.classList.remove('selected'));
+          voteButtonContainer.style.display = 'none';
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Error enviando votos: ' + error.message);
+      }
     });
-  </script>s
+  </script>
 </body>
 </html>
