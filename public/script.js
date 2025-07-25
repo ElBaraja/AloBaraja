@@ -1,3 +1,5 @@
+// script.js completo
+
 document.addEventListener('DOMContentLoaded', () => {
   const welcomeScreen = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
@@ -5,6 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const forgeSound = document.getElementById('forge-sound');
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
+
+  // IDs de los entry en Google Forms
+  const entryIDs = {
+    clipDelAno: '1485533663',
+    repo: '2064071877',
+    mejorClip: '1008162894',
+    mejorTiktok: '747262070',
+  };
 
   // Inicializar AOS y partículas al cargar la página
   AOS.init();
@@ -126,57 +136,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- NUEVO: Enviar votos directo a Google Forms usando fetch POST ---
+  // Función para enviar formulario a Google Forms usando un form oculto y submit tradicional
+  function enviarGoogleForm(votos) {
+    const url = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
 
-  // Reemplaza con tu URL pública del Google Forms (sin /viewform)
-  const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
+    // Crear formulario oculto
+    const form = document.createElement('form');
+    form.style.display = 'none';
+    form.method = 'POST';
+    form.action = url;
+    form.target = '_blank'; // abre en pestaña nueva para no interrumpir
 
-  // Mapeo de los nombres de las categorías a sus entry IDs (ejemplo)
-  const entryIDs = {
-    clipDelAno: '1485533663',
-    repo: '2064071877',
-    mejorClip: '1008162894',
-    mejorTiktok: '747262070',
-  };
+    // Agregar inputs hidden con votos
+    for (const key in votos) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = `entry.${entryIDs[key]}`;
+      input.value = votos[key];
+      form.appendChild(input);
+    }
 
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
+
+  // Evento click para enviar votos
   voteButton.addEventListener('click', () => {
-    // Recopilar votos en formato entry.<id>=valor
-    const formData = new URLSearchParams();
-
+    const votos = {};
     document.querySelectorAll('.category').forEach(cat => {
-      // Obtener nombre de la categoría, ej: clipDelAno, repo, mejorClip, mejorTiktok
       const radios = cat.querySelectorAll('input[type="radio"]');
-      const name = radios.length > 0 ? radios[0].name : null;
-
-      if (name) {
+      if (radios.length > 0) {
+        const name = radios[0].name;
         const selected = cat.querySelector('input[type="radio"]:checked');
-        if (selected) {
-          const entryID = entryIDs[name];
-          if (entryID) {
-            formData.append(`entry.${entryID}`, selected.value);
-          }
-        }
+        if (selected) votos[name] = selected.value;
       }
     });
 
-    // Enviar datos con fetch POST a Google Forms
-    fetch(googleFormURL, {
-      method: 'POST',
-      mode: 'no-cors', // Importante para no tener error CORS
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    })
-    .then(() => {
-      alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
-      // Opcional: resetear formulario
-      document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
-      document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
-      voteButtonContainer.style.display = 'none';
-    })
-    .catch(() => {
-      alert('⚠️ Hubo un error al enviar tu voto. Por favor, intenta de nuevo.');
-    });
+    enviarGoogleForm(votos);
+
+    alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
+
+    // Resetear selección y ocultar botón votar
+    document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
+    voteButtonContainer.style.display = 'none';
   });
 });
