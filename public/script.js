@@ -6,17 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
 
-  // Entry IDs reales del Google Forms (usa los name del HTML como claves)
   const entryIDs = {
-    clipDelAno: '1485533663',
+    momentoGaga: '1485533663',
     repo: '2064071877',
     mejorClip: '1008162894',
-    mejorTiktok: '747262070',
+    mejorTikTok: '747262070',
   };
 
   // Inicializar AOS y partículas
   AOS.init();
-
   particlesJS("particles-js", {
     particles: {
       number: { value: 60, density: { enable: true, value_area: 800 } },
@@ -161,9 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
+
+      // Limpiar selección y ocultar botón votar
       document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
       document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
       voteButtonContainer.style.display = 'none';
+
     } catch (error) {
       alert('❌ Hubo un error al enviar tu voto. Por favor, intentá de nuevo.');
       console.error('Error al enviar votos a Google Forms:', error);
