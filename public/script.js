@@ -1,5 +1,3 @@
-// script.js completo
-
 document.addEventListener('DOMContentLoaded', () => {
   const welcomeScreen = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
@@ -164,13 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Evento click para enviar votos
   voteButton.addEventListener('click', () => {
     const votos = {};
-    document.querySelectorAll('.category').forEach(cat => {
-      const radios = cat.querySelectorAll('input[type="radio"]');
-      if (radios.length > 0) {
-        const name = radios[0].name;
-        const selected = cat.querySelector('input[type="radio"]:checked');
-        if (selected) votos[name] = selected.value;
-      }
+    // Enviar todas las categorías siempre, con valor vacío si no hay selección
+    const categorias = ['clipDelAno', 'repo', 'mejorClip', 'mejorTiktok'];
+
+    categorias.forEach(catName => {
+      const selected = document.querySelector(`input[name="${catName}"]:checked`);
+      votos[catName] = selected ? selected.value : '';
     });
 
     enviarGoogleForm(votos);
