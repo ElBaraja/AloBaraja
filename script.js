@@ -112,3 +112,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
+
+function doPost(e) {
+  try {
+    // Obtener el JSON enviado en el cuerpo de la petición
+    var datos = JSON.parse(e.postData.contents);
+    
+    // Accede a los datos recibidos
+    // Por ejemplo: datos.clipDelAno, datos.mejorMeme, etc.
+    
+    var sheet = SpreadsheetApp.openById('TU_ID_DE_HOJA').getSheetByName('Votos');
+    sheet.appendRow([
+      new Date(),
+      datos.clipDelAno || '',
+      datos.mejorMeme || '',
+      datos.momentoEpico || '',
+      datos.mejorJugador || ''
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' })).setMimeType(ContentService.MimeType.JSON);
+  } catch(error) {
+    return ContentService.createTextOutput(JSON.stringify({ 'result': 'error', 'message': error.message })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
