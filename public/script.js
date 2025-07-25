@@ -6,20 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
 
-  // Mapeo nombres cortos a preguntas Google Forms
-  const nameToQuestionText = {
-    clipDelAno: "CLIP DEL AÑO",
-    repo: "R . E . P . O",
-    mejorClip: "MEJOR CLIP",
-    mejorTiktok: "MEJOR TIK-TOK"
-  };
-
-  // Entry IDs Google Forms para cada pregunta
+  // Entry IDs reales del Google Forms (usa los name del HTML como claves)
   const entryIDs = {
-    "CLIP DEL AÑO": '1485533663',
-    "R . E . P . O": '2064071877',
-    "MEJOR CLIP": '1008162894',
-    "MEJOR TIK-TOK": '747262070',
+    clipDelAno: '1485533663',
+    repo: '2064071877',
+    mejorClip: '1008162894',
+    mejorTiktok: '747262070',
   };
 
   // Inicializar AOS y partículas
@@ -88,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
-  // Validar que todas las categorías tengan selección para mostrar botón votar
+  // Validar que todas las categorías tengan selección
   function checkSelections() {
     const categories = document.querySelectorAll('.category');
     for (const cat of categories) {
@@ -97,19 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // Validación ANTES de enviar para evitar ir a Google Forms con datos incompletos
-  function validarAntesDeEnviar() {
-    const categorias = Object.keys(nameToQuestionText);
-    for (const cat of categorias) {
-      if (!document.querySelector(`input[name="${cat}"]:checked`)) {
-        alert(`Por favor seleccioná una opción para la categoría "${nameToQuestionText[cat]}".`);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // Manejar selección y añadir clase selected
+  // Mostrar botón votar solo si todas seleccionadas
   document.querySelectorAll('.video-container').forEach(container => {
     const radios = container.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => {
@@ -125,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Permitir seleccionar radio con click en video o label
+  // Click en video o label activa selección
   document.querySelectorAll('.video-label').forEach(label => {
     const video = label.querySelector('video');
     const input = label.querySelector('input[type="radio"]');
@@ -149,34 +129,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Enviar formulario a Google Forms con form oculto + fetch para no redirigir
+  // Validar antes de enviar
+  function validarAntesDeEnviar() {
+    for (const name in entryIDs) {
+      const seleccionado = document.querySelector(`input[name="${name}"]:checked`);
+      if (!seleccionado) {
+        alert(`Seleccioná una opción para la categoría "${name}".`);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Enviar votos a Google Forms
   async function enviarGoogleForm(votos) {
     const url = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
 
-    // Construir datos para enviar
-    const formData = new URLSearchParams();
+    const formData = new FormData();
     for (const key in votos) {
-      const questionName = nameToQuestionText[key];
-      if (!questionName) continue;
-      formData.append(`entry.${entryIDs[questionName]}`, votos[key]);
+      const entryId = entryIDs[key];
+      if (entryId && votos[key]) {
+        formData.append(`entry.${entryId}`, votos[key]);
+      }
     }
 
     try {
       await fetch(url, {
         method: 'POST',
         mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData.toString(),
+        body: formData
       });
-      alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
 
-      // Resetear selección y ocultar botón votar
-      document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+      alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
       document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
       voteButtonContainer.style.display = 'none';
-
     } catch (error) {
       alert('❌ Hubo un error al enviar tu voto. Por favor, intentá de nuevo.');
       console.error('Error al enviar votos a Google Forms:', error);
@@ -187,12 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!validarAntesDeEnviar()) return;
 
     const votos = {};
-    const categorias = Object.keys(nameToQuestionText);
-
-    categorias.forEach(catName => {
-      const selected = document.querySelector(`input[name="${catName}"]:checked`);
-      votos[catName] = selected ? selected.value : '';
-    });
+    for (const name in entryIDs) {
+      const selected = document.querySelector(`input[name="${name}"]:checked`);
+      votos[name] = selected ? selected.value : '';
+    }
 
     enviarGoogleForm(votos);
   });
