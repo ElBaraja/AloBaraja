@@ -126,12 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // CAMBIA ESTE VALOR SEGÚN TU ENTORNO:
-  // - Para pruebas local con proxy Vercel: '/api/votos'
-  // - Para Google Apps Script URL: la URL completa con /exec al final
-  const scriptURL = '/api/votos'; // Cambiar a tu URL correcta
+  // URL usando proxy en Vercel:
+  const scriptURL = '/api/votos';
 
-  // Enviar votos a Google Apps Script con POST JSON o proxy
+  // Enviar votos con POST JSON usando proxy
   voteButton.addEventListener('click', () => {
     const votes = {};
     document.querySelectorAll('.category').forEach(cat => {
@@ -161,5 +159,4 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("⚠️ Hubo un error al guardar tu voto.");
       });
   });
-
 });
