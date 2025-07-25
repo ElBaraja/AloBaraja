@@ -126,37 +126,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // URL usando proxy en Vercel:
-  const scriptURL = '/api/votos';
+  // --- NUEVO: Enviar votos directo a Google Forms usando fetch POST ---
 
-  // Enviar votos con POST JSON usando proxy
+  // Reemplaza con tu URL pública del Google Forms (sin /viewform)
+  const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
+
+  // Mapeo de los nombres de las categorías a sus entry IDs (ejemplo)
+  const entryIDs = {
+    clipDelAno: '1485533663',
+    repo: '2064071877',
+    mejorClip: '1008162894',
+    mejorTiktok: '747262070',
+  };
+
   voteButton.addEventListener('click', () => {
-    const votes = {};
+    // Recopilar votos en formato entry.<id>=valor
+    const formData = new URLSearchParams();
+
     document.querySelectorAll('.category').forEach(cat => {
-      const name = cat.querySelector('input[type="radio"]').name;
-      const selected = cat.querySelector('input[type="radio"]:checked');
-      if (selected) votes[name] = selected.value;
+      // Obtener nombre de la categoría, ej: clipDelAno, repo, mejorClip, mejorTiktok
+      const radios = cat.querySelectorAll('input[type="radio"]');
+      const name = radios.length > 0 ? radios[0].name : null;
+
+      if (name) {
+        const selected = cat.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          const entryID = entryIDs[name];
+          if (entryID) {
+            formData.append(`entry.${entryID}`, selected.value);
+          }
+        }
+      }
     });
 
-    fetch(scriptURL, {
+    // Enviar datos con fetch POST a Google Forms
+    fetch(googleFormURL, {
       method: 'POST',
-      body: JSON.stringify(votes),
-      headers: { 'Content-Type': 'application/json' }
+      mode: 'no-cors', // Importante para no tener error CORS
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
     })
-      .then(res => {
-        if (!res.ok) throw new Error("Respuesta no OK");
-        return res.json();
-      })
-      .then(data => {
-        if (data.result === 'success') {
-          alert("✅ ¡Gracias por votar!\nTus votos:\n" + JSON.stringify(votes, null, 2));
-        } else {
-          alert("⚠️ Hubo un problema guardando el voto:\n" + (data.message || ''));
-        }
-      })
-      .catch(err => {
-        console.error('❌ Error al enviar el voto:', err);
-        alert("⚠️ Hubo un error al guardar tu voto.");
-      });
+    .then(() => {
+      alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
+      // Opcional: resetear formulario
+      document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+      document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
+      voteButtonContainer.style.display = 'none';
+    })
+    .catch(() => {
+      alert('⚠️ Hubo un error al enviar tu voto. Por favor, intenta de nuevo.');
+    });
   });
 });
