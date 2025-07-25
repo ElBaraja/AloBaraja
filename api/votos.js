@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -7,7 +5,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Reenvía la petición POST al Google Apps Script
     const response = await fetch('https://script.google.com/macros/s/AKfycbwiGNj0Qd7KqwA3EXIKLENRINV3Yfs2eQs_MziptVzv6ewUSBYLcm1sL5gxmiQqoiIY/exec', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -16,9 +13,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Devuelve la respuesta al cliente
     res.status(response.status).json(data);
-
   } catch (error) {
     res.status(500).json({ error: 'Error en el proxy', details: error.message });
   }
