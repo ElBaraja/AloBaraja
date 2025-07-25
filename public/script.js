@@ -108,10 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = label.querySelector('input[type="radio"]');
 
     if (video && input) {
-      video.addEventListener('click', () => {
+      video.addEventListener('click', (e) => {
         if (!input.checked) {
           input.checked = true;
-          input.dispatchEvent(new Event('change'));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
         }
       });
     }
@@ -120,13 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target !== video) {
         if (!input.checked) {
           input.checked = true;
-          input.dispatchEvent(new Event('change'));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }
     });
   });
 
-  // Enviar votos a Google Apps Script con POST JSON
+  // CAMBIA ESTE VALOR SEGÚN TU ENTORNO:
+  // - Para pruebas local con proxy Vercel: '/api/votos'
+  // - Para Google Apps Script URL: la URL completa con /exec al final
+  const scriptURL = '/api/votos'; // Cambiar a tu URL correcta
+
+  // Enviar votos a Google Apps Script con POST JSON o proxy
   voteButton.addEventListener('click', () => {
     const votes = {};
     document.querySelectorAll('.category').forEach(cat => {
@@ -134,8 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const selected = cat.querySelector('input[type="radio"]:checked');
       if (selected) votes[name] = selected.value;
     });
-
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiGNj0Qd7KqwA3EXIKLENRINV3Yfs2eQs_MziptVzv6ewUSBYLcm1sL5gxmiQqoiIY/exec';
 
     fetch(scriptURL, {
       method: 'POST',
