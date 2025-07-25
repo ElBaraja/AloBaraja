@@ -6,15 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const voteButtonContainer = document.getElementById('voteButtonContainer');
   const voteButton = document.getElementById('voteButton');
 
-  // IDs de los entry en Google Forms
-  const entryIDs = {
-    clipDelAno: '1485533663',
-    repo: '2064071877',
-    mejorClip: '1008162894',
-    mejorTiktok: '747262070',
+  // Mapeo nombres cortos de los inputs en HTML a nombres exactos de preguntas en Google Forms
+  const nameToQuestionText = {
+    clipDelAno: "CLIP DEL AÑO",
+    repo: "R . E . P . O",
+    mejorClip: "MEJOR CLIP",
+    mejorTiktok: "MEJOR TIK-TOK"
   };
 
-  // Inicializar AOS y partículas al cargar la página
+  // Entry IDs en Google Forms para cada pregunta (nombre exacto)
+  const entryIDs = {
+    "CLIP DEL AÑO": '1485533663',
+    "R . E . P . O": '2064071877',
+    "MEJOR CLIP": '1008162894',
+    "MEJOR TIK-TOK": '747262070',
+  };
+
+  // Inicializar AOS y partículas
   AOS.init();
 
   particlesJS("particles-js", {
@@ -51,13 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
     retina_detect: true
   });
 
-  // Intentar reproducir audio al cargar (puede bloquearse)
+  // Audio play / fadeout
   forgeSound.volume = 1;
-  forgeSound.play().catch(() => {
-    // No hace nada hasta click usuario
-  });
+  forgeSound.play().catch(() => {});
 
-  // Función para hacer fade out del audio
   function fadeOutAudio(audio, duration = 1000) {
     let volume = audio.volume;
     const interval = 50;
@@ -74,11 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, interval);
   }
 
-  // Mostrar contenido y ocultar bienvenida al click en botón
   enterButton.addEventListener('click', () => {
     forgeSound.play().catch(() => {});
     fadeOutAudio(forgeSound, 1000);
-
     setTimeout(() => {
       welcomeScreen.style.display = 'none';
       mainContent.style.display = 'block';
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // Manejar selección y añadir clase selected a labels
+  // Manejar selección y añadir clase selected
   document.querySelectorAll('.video-container').forEach(container => {
     const radios = container.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => {
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = label.querySelector('input[type="radio"]');
 
     if (video && input) {
-      video.addEventListener('click', (e) => {
+      video.addEventListener('click', () => {
         if (!input.checked) {
           input.checked = true;
           input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -134,22 +137,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Función para enviar formulario a Google Forms usando un form oculto y submit tradicional
+  // Enviar formulario a Google Forms con form oculto + submit tradicional
   function enviarGoogleForm(votos) {
     const url = 'https://docs.google.com/forms/d/e/1FAIpQLSccqp2BO_lezekPAcI6jXudkb5QM9ctDLQYAeu3sffUy3Gvcg/formResponse';
 
-    // Crear formulario oculto
     const form = document.createElement('form');
     form.style.display = 'none';
     form.method = 'POST';
     form.action = url;
-    form.target = '_blank'; // abre en pestaña nueva para no interrumpir
+    form.target = '_blank';
 
-    // Agregar inputs hidden con votos
     for (const key in votos) {
+      const questionName = nameToQuestionText[key];
+      if (!questionName) continue;
       const input = document.createElement('input');
       input.type = 'hidden';
-      input.name = `entry.${entryIDs[key]}`;
+      input.name = `entry.${entryIDs[questionName]}`;
       input.value = votos[key];
       form.appendChild(input);
     }
@@ -159,11 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(form);
   }
 
-  // Evento click para enviar votos
   voteButton.addEventListener('click', () => {
     const votos = {};
-    // Enviar todas las categorías siempre, con valor vacío si no hay selección
-    const categorias = ['clipDelAno', 'repo', 'mejorClip', 'mejorTiktok'];
+    const categorias = Object.keys(nameToQuestionText);
 
     categorias.forEach(catName => {
       const selected = document.querySelector(`input[name="${catName}"]:checked`);
@@ -174,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     alert('✅ ¡Gracias por votar!\nTus votos han sido enviados correctamente.');
 
-    // Resetear selección y ocultar botón votar
     document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
     document.querySelectorAll('label.video-label.selected').forEach(label => label.classList.remove('selected'));
     voteButtonContainer.style.display = 'none';
