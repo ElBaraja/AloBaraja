@@ -1,32 +1,30 @@
-// /api/submit-vote.js
-import fs from 'fs';
-import path from 'path';
-
-export default function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Método no permitido' });
+function enviarVotos() {
+  if (Object.keys(votos).length === 0) {
+    alert("Por favor, seleccioná al menos un clip antes de votar.");
     return;
   }
 
-  const votes = req.body;
+  const URL_WEBAPP = "https://script.google.com/macros/s/AKfycbyBXRx3biHEz7RBPzvZjueDw3kNG8NbhzCt9hvEY5rJLYwKVVBIn4ypSgSAsmiHqkzw/exec";
 
-  if (!votes) {
-    res.status(400).json({ error: 'No hay votos' });
-    return;
-  }
-
-  const filePath = path.resolve('./votes.json');
-
-  // Leemos el archivo actual o iniciamos un array vacío
-  let allVotes = [];
-  if (fs.existsSync(filePath)) {
-    const fileData = fs.readFileSync(filePath, 'utf8');
-    allVotes = JSON.parse(fileData);
-  }
-
-  allVotes.push(votes);
-
-  fs.writeFileSync(filePath, JSON.stringify(allVotes, null, 2));
-
-  res.status(200).json({ message: 'Voto recibido con éxito' });
+  fetch(URL_WEBAPP, {
+    method: "POST",
+    body: JSON.stringify(votos),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Error al enviar votos");
+    }
+    return response.text();
+  })
+  .then(data => {
+    alert("¡Gracias por votar! Tus votos fueron registrados correctamente.");
+    console.log("Respuesta del servidor:", data);
+  })
+  .catch(error => {
+    alert("Hubo un problema al enviar los votos. Intentalo más tarde.");
+    console.error(error);
+  });
 }
