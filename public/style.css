@@ -1,11 +1,70 @@
-body {
+/* Reset */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Orbitron', sans-serif;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: #fff;
   overflow-x: hidden;
+  position: relative;
 }
 
+/* Pantalla de bienvenida */
+#welcome-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('fondo/fondo.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #ecc94b;
+  text-shadow: 0 0 10px #ecc94b;
+}
+
+#welcome-screen h1 {
+  font-size: 3rem;
+  color: #ecc94b;
+  text-shadow: 0 0 10px #ecc94b, 0 0 20px #fff;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+#welcome-screen button {
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #ecc94b;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #ecc94b88;
+  transition: all 0.3s ease;
+  margin-top: 20px; /* para separar el botón */
+}
+
+#welcome-screen button:hover {
+  background-color: #d6bc21;
+  box-shadow: 0 0 30px #fff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Partículas detrás del contenido */
 #particles-js {
   position: fixed;
   width: 100%;
@@ -13,6 +72,7 @@ body {
   z-index: -1;
 }
 
+/* HEADER */
 header {
   text-align: center;
   padding: 4rem 2rem 2rem;
@@ -25,6 +85,7 @@ header h1 {
   letter-spacing: 3px;
 }
 
+/* SECCIONES */
 section {
   padding: 4rem 2rem;
   max-width: 1000px;
@@ -43,6 +104,7 @@ section {
   text-shadow: 0 0 5px #ecc94b;
 }
 
+/* VIDEOS */
 .video-container {
   display: flex;
   flex-wrap: wrap;
@@ -126,6 +188,7 @@ iframe {
   box-shadow: 0 0 14px #ecc94baa, 0 0 28px #ecc94b55;
 }
 
+/* FOOTER */
 footer {
   text-align: center;
   padding: 2rem;
@@ -133,6 +196,7 @@ footer {
   font-size: 0.9rem;
 }
 
+/* RESPONSIVE */
 @media (max-width: 600px) {
   .video-label video.video-embed,
   iframe {
@@ -142,6 +206,7 @@ footer {
   }
 }
 
+/* BOTÓN VOTAR */
 #voteButtonContainer button {
   padding: 1rem 2rem;
   font-size: 1.1rem;

@@ -2,179 +2,284 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nórdicos Awards</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
 <body>
-  <div id="particles-js"></div>
-  <header>
-    <h1>Nórdicos Awards 2025</h1>
-  </header>
-
-  <section class="category">
-    <h2>MOMENTO GAGA</h2>
-    <div class="video-container">
-      <div class="video-wrapper">
-        <div class="video-title">LO VISTE</div>
-        <label class="video-label">
-          <input type="radio" name="clipDelAno" value="clip1" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MOMENTOGAGA/gaga1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Nacho</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">GAGARAY</div>
-        <label class="video-label">
-          <input type="radio" name="clipDelAno" value="clip2" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MOMENTOGAGA/gaga2.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Bruno</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">Gaga suprema</div>
-        <label class="video-label">
-          <input type="radio" name="clipDelAno" value="clip3" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MOMENTOGAGA/gaga1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Fede</div>
-      </div>
+  <!-- Pantalla de bienvenida -->
+  <div id="welcome-screen">
+    <!-- Audio de fondo -->
+    <audio id="forge-sound" src="audios/audiofondo.mp3" preload="auto" loop></audio>
+    <div class="welcome-content" style="position:relative; z-index:10; text-align:center; color:#ecc94b;">
+      <h1>NÓRDICOS AWARDS 2025 ⚡</h1>
+      <p>¡La forja de los mejores momentos ha comenzado!</p>
+      <button id="enter-button" style="margin-top: 5rem;">Entrar</button>
     </div>
-  </section>
-
-  <section class="category">
-    <h2>R . E . P . O</h2>
-    <div class="video-container">
-      <div class="video-wrapper">
-        <div class="video-title">GRITO DE TROLAZO</div>
-        <label class="video-label">
-          <input type="radio" name="repo" value="meme1" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/REPO/repo1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Bruno</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">CERRA EL ORTO</div>
-        <label class="video-label">
-          <input type="radio" name="repo" value="meme2" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/REPO/repo2.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Nacho - Cristian</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">AGARRA EL PATO</div>
-        <label class="video-label">
-          <input type="radio" name="repo" value="meme3" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/REPO/repo3.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Nacho - Cristian - Bruno</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="category">
-    <h2>MEJOR CLIP</h2>
-    <div class="video-container">
-      <div class="video-wrapper">
-        <div class="video-title">Clipazo 1</div>
-        <label class="video-label">
-          <input type="radio" name="mejorClip" value="epico1" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Santi</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">Clipazo 2</div>
-        <label class="video-label">
-          <input type="radio" name="mejorClip" value="epico2" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Emi</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">Clipazo 3</div>
-        <label class="video-label">
-          <input type="radio" name="mejorClip" value="epico3" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Lea</div>
-      </div>
-    </div>
-  </section>
-
-   <section class="category">
-    <h2>MEJOR TIK-TOK</h2>
-    <div class="video-container">
-      <div class="video-wrapper">
-        <div class="video-title">DAME UN QUE? UN GRR</div>
-        <label class="video-label">
-          <input type="radio" name="mejorTiktok" value="epico1" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/TIKTOKS/tiktok1.mov" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Nacho - Edu - Pablo</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">TE LA TOCO DE PRIMERA</div>
-        <label class="video-label">
-          <input type="radio" name="mejorTiktok" value="epico2" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/TIKTOKS/tiktok3.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Manuel - Nacho</div>
-      </div>
-
-      <div class="video-wrapper">
-        <div class="video-title">PABLO CAMINANDO</div>
-        <label class="video-label">
-          <input type="radio" name="mejorTiktok" value="epico3" />
-          <video controls muted preload="metadata" class="video-embed">
-            <source src="clips/TIKTOKS/tiktok4.mp4" type="video/mp4" />
-          </video>
-        </label>
-        <div class="video-author">Pablo - Nacho</div>
-      </div>
-    </div>
-  </section>
-
-  <div id="voteButtonContainer" style="margin: 2rem auto; max-width: 1000px; text-align:center; display:none;">
-    <button id="voteButton">Votar</button>
   </div>
 
-  <footer>
-    © 2025 Nórdicos Awards - Entre amigos, los verdaderos premios
-  </footer>
+  <!-- Partículas de fondo -->
+  <div id="particles-js" style="position:fixed; width:100%; height:100%; top:0; left:0; z-index:-2;"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <!-- Contenido principal oculto -->
+  <div id="main-content" style="display:none;">
+    <header>
+      <h1>Nórdicos Awards 2025</h1>
+    </header>
+
+    <!-- Categoría MOMENTO GAGA -->
+    <section class="category">
+      <h2>MOMENTO GAGA</h2>
+      <div class="video-container">
+        <div class="video-wrapper">
+          <div class="video-title">LO VISTE</div>
+          <label class="video-label">
+            <input type="radio" name="clipDelAno" value="clip1" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MOMENTOGAGA/gaga1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Nacho</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">GAGARAY</div>
+          <label class="video-label">
+            <input type="radio" name="clipDelAno" value="clip2" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MOMENTOGAGA/gaga2.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Bruno</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">Gaga suprema</div>
+          <label class="video-label">
+            <input type="radio" name="clipDelAno" value="clip3" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MOMENTOGAGA/gaga1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Fede</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categoría R . E . P . O -->
+    <section class="category">
+      <h2>R . E . P . O</h2>
+      <div class="video-container">
+        <div class="video-wrapper">
+          <div class="video-title">GRITO DE TROLAZO</div>
+          <label class="video-label">
+            <input type="radio" name="repo" value="meme1" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/REPO/repo1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Bruno</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">CERRA EL ORTO</div>
+          <label class="video-label">
+            <input type="radio" name="repo" value="meme2" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/REPO/repo2.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Nacho - Cristian</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">AGARRA EL PATO</div>
+          <label class="video-label">
+            <input type="radio" name="repo" value="meme3" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/REPO/repo3.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Nacho - Cristian - Bruno</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categoría MEJOR CLIP -->
+    <section class="category">
+      <h2>MEJOR CLIP</h2>
+      <div class="video-container">
+        <div class="video-wrapper">
+          <div class="video-title">Clipazo 1</div>
+          <label class="video-label">
+            <input type="radio" name="mejorClip" value="epico1" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Santi</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">Clipazo 2</div>
+          <label class="video-label">
+            <input type="radio" name="mejorClip" value="epico2" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Emi</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">Clipazo 3</div>
+          <label class="video-label">
+            <input type="radio" name="mejorClip" value="epico3" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/MEJORCLIP/mj1.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Lea</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categoría MEJOR TIK-TOK -->
+    <section class="category">
+      <h2>MEJOR TIK-TOK</h2>
+      <div class="video-container">
+        <div class="video-wrapper">
+          <div class="video-title">DAME UN QUE? UN GRR</div>
+          <label class="video-label">
+            <input type="radio" name="mejorTiktok" value="epico1" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/TIKTOKS/tiktok1.mov" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Nacho - Edu - Pablo</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">TE LA TOCO DE PRIMERA</div>
+          <label class="video-label">
+            <input type="radio" name="mejorTiktok" value="epico2" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/TIKTOKS/tiktok3.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Manuel - Nacho</div>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-title">PABLO CAMINANDO</div>
+          <label class="video-label">
+            <input type="radio" name="mejorTiktok" value="epico3" />
+            <video controls muted preload="metadata" class="video-embed">
+              <source src="clips/TIKTOKS/tiktok4.mp4" type="video/mp4" />
+            </video>
+          </label>
+          <div class="video-author">Pablo - Nacho</div>
+        </div>
+      </div>
+    </section>
+
+    <div id="voteButtonContainer" style="margin: 2rem auto; max-width: 1000px; text-align:center; display:none;">
+      <button id="voteButton">Votar</button>
+    </div>
+
+    <footer>
+      © 2025 Nórdicos Awards - Entre amigos, los verdaderos premios
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="script.js"></script>
+
+  <script>
+    const enterBtn = document.getElementById('enter-button');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const mainContent = document.getElementById('main-content');
+    const forgeSound = document.getElementById('forge-sound');
+
+    // Función para hacer fade out del audio
+    function fadeOutAudio(audio, duration = 2000) {
+      let volume = audio.volume;
+      let interval = 50;
+      let step = volume / (duration / interval);
+      let fadeAudio = setInterval(() => {
+        volume -= step;
+        if (volume <= 0) {
+          audio.pause();
+          audio.volume = 1;
+          clearInterval(fadeAudio);
+        } else {
+          audio.volume = volume;
+        }
+      }, interval);
+    }
+
+    // Intentar reproducir audio al cargar la página (puede bloquearse en algunos navegadores)
+    window.addEventListener('load', () => {
+      forgeSound.volume = 1;
+      forgeSound.play().catch(() => {
+        // Si no se puede autoplay, esperará el click
+      });
+    });
+
+    enterBtn.addEventListener('click', () => {
+      // Mostrar contenido principal
+      mainContent.style.display = 'block';
+
+      // Inicializar AOS
+      AOS.init();
+
+      // Inicializar particles.js
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 800 } },
+          color: { value: "#ecc94b" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ecc94b",
+            opacity: 0.4,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 1.5,
+            direction: "none",
+            out_mode: "out"
+          }
+        },
+        interactivity: {
+          events: {
+            onhover: { enable: true, mode: "grab" },
+            onclick: { enable: true, mode: "push" }
+          },
+          modes: {
+            grab: { distance: 140, line_linked: { opacity: 1 } },
+            push: { particles_nb: 4 }
+          }
+        },
+        retina_detect: true
+      });
+
+      // Fade out del audio
+      fadeOutAudio(forgeSound);
+
+      // Ocultar pantalla bienvenida después de un corto delay
+      setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
