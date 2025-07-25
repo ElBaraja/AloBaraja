@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
           input.checked = true;
           input.dispatchEvent(new Event('change'));
         }
-        // El video sigue su funcionamiento natural (play/pause)
       });
     }
 
@@ -93,6 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const selected = cat.querySelector('input[type="radio"]:checked');
       if (selected) votes[name] = selected.value;
     });
-    alert("Gracias por votar! Tus votos:\n" + JSON.stringify(votes, null, 2));
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyBXRx3biHEz7RBPzvZjueDw3kNG8NbhzCt9hvEY5rJLYwKVVBIn4ypSgSAsmiHqkzw/exec';
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify(votes),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.text())
+      .then(res => {
+        alert("✅ ¡Gracias por votar!\nTus votos:\n" + JSON.stringify(votes, null, 2));
+      })
+      .catch(err => {
+        console.error('❌ Error al enviar el voto:', err);
+        alert("⚠️ Hubo un error al guardar tu voto.");
+      });
   });
 });
