@@ -79,6 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const selected = cat.querySelector('input[type="radio"]:checked');
       if (selected) votes[name] = selected.value;
     });
-    alert("Gracias por votar!" + JSON.stringify);
+    alert("Gracias por votar! Tus votos:\n" + JSON.stringify);
   });
 });
