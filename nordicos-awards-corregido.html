@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nórdicos Awards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: #ecc94b;
+      text-shadow: 0 0 10px #ecc94b;
+      letter-spacing: 3px;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .category {
+      margin-bottom: 5rem;
+      text-align: center;
+    }
+
+    .category h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #fff;
+      text-shadow: 0 0 5px #ecc94b;
+    }
+
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .video-label {
+      cursor: pointer;
+      transition: transform 0.3s, border 0.3s;
+      border: 3px solid transparent;
+      border-radius: 0.5rem;
+      display: inline-block;
+      position: relative;
+    }
+
+    .video-label iframe {
+      pointer-events: none;
+      border-radius: 0.5rem;
+    }
+
+    .video-label:hover {
+      transform: scale(1.05);
+    }
+
+    .video-label.selected {
+      border: 3px solid white !important;
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .video-label input[type="radio"] {
+      display: none;
+    }
+
+    iframe {
+      width: 280px;
+      height: 157px;
+      box-shadow: 0 0 14px #ecc94baa, 0 0 28px #ecc94b55;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      iframe {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    #voteButtonContainer button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #ecc94b;
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 4px 14px #ecc94baa;
+      transition: background-color 0.3s ease;
+    }
+
+    #voteButtonContainer button:hover {
+      background-color: #d6bc21;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <header data-aos="fade-down">
+    <h1>Nórdicos Awards 2025</h1>
+  </header>
+
+  <section data-aos="fade-up" class="category">
+    <h2>Clip del Año</h2>
+    <div class="video-container">
+      <label class="video-label" title="Clip 1">
+        <input type="radio" name="clipDelAno" value="clip1" />
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Clip 2">
+        <input type="radio" name="clipDelAno" value="clip2" />
+        <iframe src="https://www.youtube.com/embed/3GwjfUFyY6M" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Clip 3">
+        <input type="radio" name="clipDelAno" value="clip3" />
+        <iframe src="https://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allowfullscreen></iframe>
+      </label>
+    </div>
+  </section>
+
+  <section data-aos="fade-up" class="category">
+    <h2>Mejor Meme</h2>
+    <div class="video-container">
+      <label class="video-label" title="Meme 1">
+        <input type="radio" name="mejorMeme" value="meme1" />
+        <iframe src="https://www.youtube.com/embed/tVj0ZTS4WF4" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Meme 2">
+        <input type="radio" name="mejorMeme" value="meme2" />
+        <iframe src="https://www.youtube.com/embed/hTWKbfoikeg" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Meme 3">
+        <input type="radio" name="mejorMeme" value="meme3" />
+        <iframe src="https://www.youtube.com/embed/kXYiU_JCYtU" frameborder="0" allowfullscreen></iframe>
+      </label>
+    </div>
+  </section>
+
+  <section data-aos="fade-up" class="category">
+    <h2>Momento Más Épico</h2>
+    <div class="video-container">
+      <label class="video-label" title="Épico 1">
+        <input type="radio" name="momentoEpico" value="epico1" />
+        <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Épico 2">
+        <input type="radio" name="momentoEpico" value="epico2" />
+        <iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Épico 3">
+        <input type="radio" name="momentoEpico" value="epico3" />
+        <iframe src="https://www.youtube.com/embed/l482T0yNkeo" frameborder="0" allowfullscreen></iframe>
+      </label>
+    </div>
+  </section>
+
+  <section data-aos="fade-up" class="category">
+    <h2>Mejor Jugador</h2>
+    <div class="video-container">
+      <label class="video-label" title="Jugador 1">
+        <input type="radio" name="mejorJugador" value="jugador1" />
+        <iframe src="https://www.youtube.com/embed/IwzUs1IMdyQ" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Jugador 2">
+        <input type="radio" name="mejorJugador" value="jugador2" />
+        <iframe src="https://www.youtube.com/embed/kffacxfA7G4" frameborder="0" allowfullscreen></iframe>
+      </label>
+      <label class="video-label" title="Jugador 3">
+        <input type="radio" name="mejorJugador" value="jugador3" />
+        <iframe src="https://www.youtube.com/embed/uelHwf8o7_U" frameborder="0" allowfullscreen></iframe>
+      </label>
+    </div>
+  </section>
+
+  <div id="voteButtonContainer" style="margin: 2rem auto; max-width: 1000px; text-align:center; display:none;">
+    <button id="voteButton">Votar</button>
+  </div>
+
+  <footer>
+    © 2025 Nórdicos Awards - Entre amigos, los verdaderos premios
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 60, density: { enable: true, value_area: 800 } },
+        color: { value: "#ecc94b" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#ecc94b",
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: "none",
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 1 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Mostrar efecto seleccionado por categoría y controlar botón votar
+
+    const voteButtonContainer = document.getElementById('voteButtonContainer');
+    const voteButton = document.getElementById('voteButton');
+
+    // Esta función chequea si hay al menos 1 clip seleccionado en todas las categorías
+    function checkSelections() {
+      // Buscamos si en cada categoría hay uno seleccionado
+      const categories = document.querySelectorAll('.category');
+      for(let cat of categories) {
+        const selected = cat.querySelector('input[type="radio"]:checked');
+        if(!selected) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Al hacer click en un radio, seteamos estilos y actualizamos botón votar
+    document.querySelectorAll('.video-container').forEach(container => {
+      const radios = container.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          container.querySelectorAll('label.video-label').forEach(label => {
+            label.classList.remove('selected');
+          });
+          if (radio.checked) {
+            radio.closest('label.video-label').classList.add('selected');
+          }
+          // Mostrar botón votar solo si hay selección en todas las categorías
+          if(checkSelections()) {
+            voteButtonContainer.style.display = 'block';
+          } else {
+            voteButtonContainer.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Acción al votar
+    voteButton.addEventListener('click', () => {
+      const votes = {};
+      document.querySelectorAll('.category').forEach(cat => {
+        const name = cat.querySelector('input[type="radio"]').name;
+        const selected = cat.querySelector('input[type="radio"]:checked');
+        if(selected) votes[name] = selected.value;
+      });
+      alert("Gracias por votar! Tus votos:\n" + JSON.stringify(votes, null, 2));
+    });
+  </script>s
+</body>
+</html>
