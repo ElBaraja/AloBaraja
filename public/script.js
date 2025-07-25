@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mostrar contenido y ocultar bienvenida al click en botón
   enterButton.addEventListener('click', () => {
     forgeSound.play().catch(() => {});
-
     fadeOutAudio(forgeSound, 1000);
 
     setTimeout(() => {
@@ -136,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (selected) votes[name] = selected.value;
     });
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyBXRx3biHEz7RBPzvZjueDw3kNG8NbhzCt9hvEY5rJLYwKVVBIn4ypSgSAsmiHqkzw/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiGNj0Qd7KqwA3EXIKLENRINV3Yfs2eQs_MziptVzv6ewUSBYLcm1sL5gxmiQqoiIY/exec';
 
     fetch(scriptURL, {
       method: 'POST',
